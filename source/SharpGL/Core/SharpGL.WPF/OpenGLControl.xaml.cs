@@ -184,7 +184,7 @@ namespace SharpGL.WPF
 
                             if (hBitmap != IntPtr.Zero)
                             {
-                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
+                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap, Transparent);
 
                                 //  Copy the pixels over.
                                 image.Source = newFormatedBitmapSource;
@@ -202,7 +202,7 @@ namespace SharpGL.WPF
 
                             if (hBitmap != IntPtr.Zero)
                             {
-                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
+                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap, Transparent);
 
                                 //  Copy the pixels over.
                                 image.Source = newFormatedBitmapSource;
@@ -227,7 +227,7 @@ namespace SharpGL.WPF
         /// </summary>
         /// <param name="hBitmap">The handle of the bitmap from the OpenGL render context.</param>
         /// <returns>Returns the new format converted bitmap.</returns>
-        private static FormatConvertedBitmap GetFormatedBitmapSource(IntPtr hBitmap)
+        private static FormatConvertedBitmap GetFormatedBitmapSource(IntPtr hBitmap, bool transparent = false)
         {
             //  TODO: We have to remove the alpha channel - for some reason it comes out as 0.0 
             //  meaning the drawing comes out transparent.
@@ -235,7 +235,14 @@ namespace SharpGL.WPF
             FormatConvertedBitmap newFormatedBitmapSource = new FormatConvertedBitmap();
             newFormatedBitmapSource.BeginInit();
             newFormatedBitmapSource.Source = BitmapConversion.HBitmapToBitmapSource(hBitmap);
-            newFormatedBitmapSource.DestinationFormat = PixelFormats.Rgb24;
+            if (transparent)
+            {
+                newFormatedBitmapSource.DestinationFormat = PixelFormats.Rgba128Float;
+            }
+            else
+            {
+                newFormatedBitmapSource.DestinationFormat = PixelFormats.Rgb24; 
+            }
             newFormatedBitmapSource.EndInit();
 
             return newFormatedBitmapSource;
@@ -386,6 +393,25 @@ namespace SharpGL.WPF
         {
             get { return (bool)GetValue(DrawFPSProperty); }
             set { SetValue(DrawFPSProperty, value); }
+        }
+
+        /// <summary>
+        /// The Transparent property.
+        /// </summary>
+        private static readonly DependencyProperty TransparentProperty =
+          DependencyProperty.Register("Transparent", typeof(bool), typeof(OpenGLControl),
+          new PropertyMetadata(false, null));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to draw transparent background.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if draw transparent; otherwise, <c>false</c>.
+        /// </value>
+        public bool Transparent
+        {
+            get { return (bool)GetValue(TransparentProperty); }
+            set { SetValue(TransparentProperty, value); }
         }
 
         /// <summary>

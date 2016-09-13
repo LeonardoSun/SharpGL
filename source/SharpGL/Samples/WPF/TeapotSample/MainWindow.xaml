@@ -2,10 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Teapot Sample" Height="400" Width="600"
-        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF" Icon="/TeapotSample;component/SharpGL.ico">
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF" Icon="/TeapotSample;component/SharpGL.ico" Background="White" WindowState="Maximized">
     <Grid>
         <sharpGL:OpenGLControl 
-            OpenGLDraw="OpenGLControl_OpenGLDraw" OpenGLInitialized="OpenGLControl_OpenGLInitialized"
-            RenderContextType="FBO" />
+            OpenGLDraw="OpenGLControl_OpenGLDraw" OpenGLInitialized="OpenGLControl_OpenGLInitialized" FrameRate="60" DrawFPS="True" RenderContextType="FBO" Transparent="True" />
     </Grid>
 </Window>
